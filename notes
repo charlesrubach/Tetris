@@ -1,0 +1,29 @@
+Git setup
+Memory Arena
+Game Object
+UI
+    - Need a clean way to draw the UI
+    - New game
+    - Game Over
+    - High Scores
+    - Game Screen
+Menus
+Play area grid
+Score
+Next Piece
+Tetrominoes
+    - Rotation
+    - Collision detection
+    - Line clear logic
+    - Randomizer
+    - Wall kick?
+Game Logic
+    - Game over
+    - Points
+    - Levels - speed up
+Music
+Sound
+Keyboard Input
+    - Move
+    - Rotate
+    - Fast drop
