@@ -28,6 +28,8 @@ add_executable(Tetris src/main.c
         include/input.h
         include/config.h
         include/utilities.h
+        src/arena.c
+        include/arena.h
 )
 
 target_include_directories(Tetris PRIVATE

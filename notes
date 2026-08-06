@@ -18,6 +18,7 @@ Tetrominoes
     - Randomizer
     - Wall kick?
 Game Logic
+    - Game Loop
     - Game over
     - Points
     - Levels - speed up
