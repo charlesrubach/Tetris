@@ -4,8 +4,6 @@
 
 #include "../include/arena.h"
 
-
-
 // Initialize the arena by pre-allocating a large block
 Arena arena_init(const size_t capacity) {
     Arena arena = {0};
