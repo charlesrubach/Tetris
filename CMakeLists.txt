@@ -16,8 +16,8 @@ set(CMAKE_C_STANDARD 11)
 add_executable(Tetris src/main.c
         src/game.c
         include/game.h
-        src/grid.c
-        include/grid.h
+        src/playfield.c
+        include/playfield.h
         src/tetromino.c
         include/tetromino.h
         src/randomizer.c
