@@ -1,11 +1,6 @@
-//
-// Created by Charles on 8/6/2026.
-//
-
 #include <string.h>
 #include <stdio.h>
 #include "game.h"
-
 
 const int tetromino_shape[TOTAL_TETROMINOES][TETROMINO_SIZE][TETROMINO_SIZE] = {
 

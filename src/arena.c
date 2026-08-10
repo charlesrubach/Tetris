@@ -1,8 +1,4 @@
-//
-// Created by Charles on 8/6/2026.
-//
-
-#include "../include/arena.h"
+#include "arena.h"
 #include <stdio.h>
 
 // Initialize the arena by pre-allocating a large block
