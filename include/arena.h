@@ -5,7 +5,6 @@
 #ifndef TETRIS_ARENA_H
 #define TETRIS_ARENA_H
 
-#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 
