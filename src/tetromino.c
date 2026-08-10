@@ -3,7 +3,9 @@
 //
 
 #include <string.h>
+#include <stdio.h>
 #include "game.h"
+
 
 const int tetromino_shape[TOTAL_TETROMINOES][TETROMINO_SIZE][TETROMINO_SIZE] = {
 
@@ -16,65 +18,66 @@ const int tetromino_shape[TOTAL_TETROMINOES][TETROMINO_SIZE][TETROMINO_SIZE] = {
     },
     // Tetromino Shape J
     {
-            {1, 0, 0, 0},
-            {1, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {1, 0, 0, 0},
+        {1, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     },
     // Tetromino Shape L
     {
-            {0, 0, 1, 0},
-            {1, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {0, 0, 1, 0},
+        {1, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     },
     // Tetromino Shape O
     {
-            {0, 1, 1, 0},
-            {0, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {0, 1, 1, 0},
+        {0, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     },
     // Tetromino Shape S
     {
-            {0, 1, 1, 0},
-            {1, 1, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {0, 1, 1, 0},
+        {1, 1, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     },
     // Tetromino Shape T
     {
-            {0, 1, 0, 0},
-            {1, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {0, 1, 0, 0},
+        {1, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     },
     // Tetromino Shape Z
     {
-            {1, 1, 0, 0},
-            {0, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+        {1, 1, 0, 0},
+        {0, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
     }
 };
 
 Color TetrominoColors[TOTAL_TETROMINOES + 1] = {
-    SKYBLUE,    // I
-    DARKBLUE,   // J
-    ORANGE,     // L
-    YELLOW,     // O
-    GREEN,      // S
-    PURPLE,     // T
-    RED,        // Z
+    SKYBLUE, // I
+    DARKBLUE, // J
+    ORANGE, // L
+    YELLOW, // O
+    GREEN, // S
+    PURPLE, // T
+    RED, // Z
     CUSTOM_COLOR_GAME_PLAYFIELD
 };
 
-Tetromino_t *Tetromino_Create(const Game *game, const TetrominoShape shape) {
-    Tetromino_t *tetromino = arena_alloc_type(game->arena, Tetromino_t);
+Tetromino_t *Tetromino_Generate(Tetromino_t *tetromino) {
     if (tetromino == NULL) {
-        fprintf(stderr, "Unable to allocate space for tetromino.\n");
+        fprintf(stderr, "Tetromino not allocated.\n");
         return NULL;
     }
+
+    const TetrominoShape shape = (TetrominoShape)GetRandomValue(0, TOTAL_TETROMINOES - 1);
 
     for (int i = 0; i < TETROMINO_SIZE; i++) {
         for (int j = 0; j < TETROMINO_SIZE; j++) {
@@ -90,14 +93,14 @@ Tetromino_t *Tetromino_Create(const Game *game, const TetrominoShape shape) {
     tetromino->shape = shape;
     tetromino->color = TetrominoColors[shape];
     Tetromino_Rotate(tetromino, CW);
-    tetromino->pos = (Vector2i) { (GRID_WIDTH - TETROMINO_SIZE - 1) / 2, 0 };
+    tetromino->pos = (Vector2i){0, 0};
 
     return tetromino;
 }
 
-void Tetromino_Rotate(Tetromino_t *tetromino, const TetrominoDirection direction) {
-    int rotated_grid[TETROMINO_SIZE][TETROMINO_SIZE] = { 0 };
-    switch (direction){
+void Tetromino_Rotate(Tetromino_t *tetromino, const TetrominoRotationDirection direction) {
+    int rotated_grid[TETROMINO_SIZE][TETROMINO_SIZE] = {0};
+    switch (direction) {
         case CW:
             for (int i = 0; i < TETROMINO_SIZE; i++) {
                 for (int j = 0; j < TETROMINO_SIZE; j++) {
@@ -122,6 +125,52 @@ void Tetromino_Rotate(Tetromino_t *tetromino, const TetrominoDirection direction
     memcpy(tetromino->grid, rotated_grid, sizeof(tetromino->grid));
 }
 
-void Tetromino_Move(Tetromino_t *tetromino) {
+void Tetromino_Move(Tetromino_t *tetromino, const TetrominoDirection move_direction) {
+    bool out_of_bounds = false;
 
+    for (int i = 0; i < TETROMINO_SIZE; i++) {
+        for (int j = 0; j < TETROMINO_SIZE; j++) {
+            if (tetromino->grid[i][j] == tetromino->shape) {
+                if (move_direction == RIGHT) {
+                    if (tetromino->pos.x + j + 1 >= GRID_WIDTH) {
+                        out_of_bounds = true;
+                        break;
+                    }
+                }
+                if (move_direction == LEFT) {
+                    if (tetromino->pos.x - 1 + j < 0) {
+                        out_of_bounds = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!out_of_bounds) {
+        if (move_direction == RIGHT) {
+            tetromino->pos.x++;
+        } else {
+            tetromino->pos.x--;
+        }
+    }
+}
+
+bool Tetromino_Bounds_Check(const Tetromino_t *tetromino) {
+    bool out_of_bounds = false;
+
+    for (int i = 0; i < TETROMINO_SIZE; i++) {
+        for (int j = 0; j < TETROMINO_SIZE; j++) {
+            if (tetromino->grid[i][j] == tetromino->shape) {
+                // Translate grid position to playfield position
+                const Vector2i square_pos = (Vector2i) { .x = j + tetromino->pos.x, .y = i + tetromino->pos.y};
+                if (square_pos.x >= GRID_WIDTH || square_pos.x < 0 || square_pos.y >= GRID_HEIGHT || square_pos.y < 0) {
+                    out_of_bounds = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return out_of_bounds;
 }

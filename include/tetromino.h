@@ -1,7 +1,3 @@
-//
-// Created by Charles on 8/6/2026.
-//
-
 #ifndef TETRIS_TETROMINO_H
 #define TETRIS_TETROMINO_H
 
@@ -25,9 +21,14 @@ typedef enum TetrominoRotationState {
     DEGREE_0, DEGREE_90_CW, DEGREE_180, DEGREE_270_CCW, TOTAL_ROTATION_STATES
 } TetrominoRotationState;
 
-typedef enum TetrominoDirection {
+typedef enum TetrominoRotationDirection {
     CW, CCW
+} TetrominoRotationDirection;
+
+typedef enum TetrominoDirection {
+    LEFT, RIGHT
 } TetrominoDirection;
+
 
 typedef struct Tetromino {
     TetrominoShape grid[TETROMINO_SIZE][TETROMINO_SIZE];
@@ -37,9 +38,9 @@ typedef struct Tetromino {
     Vector2i pos;
 } Tetromino_t;
 
-Tetromino_t *Tetromino_Create(const Game *game, TetrominoShape shape);
-void Tetromino_Rotate(Tetromino_t *tetromino, TetrominoDirection direction);
-void Tetromino_Move(Tetromino_t *tetromino);
-
+Tetromino_t *Tetromino_Generate(Tetromino_t *tetromino);
+void Tetromino_Rotate(Tetromino_t *tetromino, TetrominoRotationDirection direction);
+void Tetromino_Move(Tetromino_t *tetromino, TetrominoDirection move_direction);
+bool Tetromino_Bounds_Check(const Tetromino_t *tetromino);
 
 #endif //TETRIS_TETROMINO_H
