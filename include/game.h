@@ -5,9 +5,11 @@
 #include "playfield.h"
 #include "tetromino.h"
 #include "arena.h"
+#include "input.h"
 
 #define EMPTY_TETROMINO TOTAL_TETROMINOES
-#define INITIAL_DROP_INTERVAL   (5.5f)
+#define INITIAL_DROP_INTERVAL   (0.5f)
+#define MOVE_INTERVAL           (INITIAL_DROP_INTERVAL / GRID_WIDTH)
 
 // Custom colors
 #define CUSTOM_COLOR_GAME_BACKGROUND    (Color){.r = 77, .g = 2, .b = 176, .a = 255}
@@ -17,12 +19,15 @@
 typedef struct Game {
     Arena *arena;
     Color background_color;
+    Input input;
     int score;
     int level;
     Tetromino_t *current_piece;
+    Tetromino_t *ghost_piece;
     Tetromino_t *next_piece;
     TetrominoShape playfield[GRID_HEIGHT][GRID_WIDTH];
     double drop_interval;
+    double drop_interval_speed_up;
     double last_drop_time;
 } Game;
 
