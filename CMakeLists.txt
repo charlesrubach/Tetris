@@ -6,36 +6,29 @@ include(FetchContent)
 FetchContent_Declare(
         raylib
         GIT_REPOSITORY https://github.com/raysan5/raylib.git
-        GIT_TAG master
+        GIT_TAG 6.0
 )
 
 FetchContent_MakeAvailable(raylib)
 
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-add_executable(Tetris src/main.c
+add_executable(Tetris)
+
+target_sources(Tetris PRIVATE
+        src/main.c
         src/game.c
-        include/game.h
         src/playfield.c
-        include/playfield.h
         src/tetromino.c
-        include/tetromino.h
         src/randomizer.c
-        include/randomizer.h
         src/renderer.c
-        include/renderer.h
         src/input.c
-        include/input.h
-        include/config.h
-        include/utilities.h
         src/arena.c
-        include/arena.h
 )
 
 target_include_directories(Tetris PRIVATE
         ${PROJECT_SOURCE_DIR}/include
-        ${PROJECT_SOURCE_DIR}/src
 )
-
 
 target_link_libraries(Tetris PRIVATE raylib)
