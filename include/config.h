@@ -5,7 +5,7 @@
 #ifndef TETRIS_CONFIG_H
 #define TETRIS_CONFIG_H
 
-#define ARENA_CAPACITY      1024
+#define ARENA_CAPACITY      2048
 
 #define SCREEN_WIDTH        600
 #define SCREEN_HEIGHT       800
