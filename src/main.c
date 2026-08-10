@@ -1,3 +1,6 @@
+#include <time.h>
+#include <stdio.h>
+
 #include "raylib.h"
 #include "arena.h"
 #include "game.h"
@@ -14,7 +17,7 @@ int main(void)
     const int screenWidth = SCREEN_WIDTH;
     const int screenHeight = SCREEN_HEIGHT;
 
-    // Arena Init
+    // Arena init
     Arena arena = arena_init(ARENA_CAPACITY);
     if (arena.buffer == NULL) {
         fprintf(stderr, "Arena failed to initialize.\n");
@@ -30,6 +33,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "raylib Tetris by Charles Rubach");
     SetTargetFPS(TARGE_FPS);               // Set our game to run at 60 frames-per-second
+    SetRandomSeed((unsigned int) time(NULL)); // set random seed using the time
     //--------------------------------------------------------------------------------------
 
     // Main game loop
