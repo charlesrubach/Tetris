@@ -1,8 +1,10 @@
 #ifndef TETRIS_TETROMINO_H
 #define TETRIS_TETROMINO_H
 
-#define TETROMINO_SIZE  4
 #include "utilities.h"
+
+#define TETROMINO_SIZE  4
+#define TETROMINO_DROP_POINTS   20
 
 typedef enum TetrominoShape {
     TETROMINO_I,
@@ -41,6 +43,7 @@ typedef struct Tetromino {
 Tetromino_t *Tetromino_Generate(Tetromino_t *tetromino);
 void Tetromino_Rotate(Tetromino_t *tetromino, TetrominoRotationDirection direction);
 void Tetromino_Move(Tetromino_t *tetromino, TetrominoDirection move_direction);
+int TetrominoDrop(Tetromino_t *tetromino);
 bool Tetromino_Bounds_Check(const Tetromino_t *tetromino);
 
 #endif //TETRIS_TETROMINO_H

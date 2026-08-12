@@ -88,7 +88,7 @@ Tetromino_t *Tetromino_Generate(Tetromino_t *tetromino) {
     tetromino->shape = shape;
     tetromino->color = TetrominoColors[shape];
     Tetromino_Rotate(tetromino, CW);
-    tetromino->pos = (Vector2i){0, 0};
+    tetromino->pos = (Vector2i){2, 0};
 
     return tetromino;
 }
@@ -149,6 +149,11 @@ void Tetromino_Move(Tetromino_t *tetromino, const TetrominoDirection move_direct
             tetromino->pos.x--;
         }
     }
+}
+
+int TetrominoDrop(Tetromino_t *tetromino) {
+   tetromino->pos.y++;
+    return TETROMINO_DROP_POINTS;
 }
 
 bool Tetromino_Bounds_Check(const Tetromino_t *tetromino) {
