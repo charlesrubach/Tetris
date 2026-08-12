@@ -14,7 +14,9 @@ FetchContent_MakeAvailable(raylib)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-add_executable(Tetris)
+add_executable(Tetris
+        src/ui.c
+        include/ui.h)
 
 target_sources(Tetris PRIVATE
         src/main.c
