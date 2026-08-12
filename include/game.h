@@ -6,10 +6,12 @@
 #include "tetromino.h"
 #include "arena.h"
 #include "input.h"
+#include "ui.h"
 
-#define EMPTY_TETROMINO TOTAL_TETROMINOES
-#define INITIAL_DROP_INTERVAL   (0.5f)
-#define MOVE_INTERVAL           (INITIAL_DROP_INTERVAL / GRID_WIDTH)
+#define EMPTY_TETROMINO                 TOTAL_TETROMINOES
+#define INITIAL_DROP_INTERVAL           (0.5f)
+#define DROP_INTERVAL_INITIAL_SPEEDUP   (1.0f)
+#define MOVE_INTERVAL                   (INITIAL_DROP_INTERVAL / GRID_WIDTH)
 
 // Custom colors
 #define CUSTOM_COLOR_GAME_BACKGROUND    (Color){.r = 77, .g = 2, .b = 176, .a = 255}
@@ -31,14 +33,14 @@ typedef struct Game {
     double last_drop_time;
 } Game;
 
-void Game_Init(Game *game, Arena *arena);
-void Game_Reset(Game *game);
-void Game_Loop(Game *game);
-void Game_Handle_Input(Game *game);
-void Game_Update(Game *game);
-void Game_Render(const Game *game);
-void Game_SpawnPiece(Game *game);
-void Game_CheckGameOver(Game *game);
-void Game_ClearLine(Game *game);
+void GameInit(Game *game, Arena *arena);
+void GameReset(Game *game);
+void GameLoop(Game *game);
+void GameHandleInput(Game *game);
+void GameUpdate(Game *game);
+void GameRender(const Game *game);
+void GameSpawnPiece(Game *game);
+void GameCheckGameOver(Game *game);
+void GameClearLine(Game *game);
 
 #endif //TETRIS_GAME_H
