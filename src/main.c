@@ -17,6 +17,10 @@ int main(void)
     const int screenWidth = SCREEN_WIDTH;
     const int screenHeight = SCREEN_HEIGHT;
 
+    InitWindow(screenWidth, screenHeight, "raylib Tetris by Charles Rubach");
+    SetTargetFPS(TARGE_FPS);               // Set our game to run at 60 frames-per-second
+
+    SetRandomSeed((unsigned int) time(NULL)); // set random seed using the time
     // Arena init
     Arena arena = arena_init(ARENA_CAPACITY);
     if (arena.buffer == NULL) {
@@ -29,17 +33,15 @@ int main(void)
         fprintf(stderr, "Failed to allocate space for the Game object\n");
         return 1;
     }
-    Game_Init(game, &arena);
+    GameInit(game, &arena);
 
-    InitWindow(screenWidth, screenHeight, "raylib Tetris by Charles Rubach");
-    SetTargetFPS(TARGE_FPS);               // Set our game to run at 60 frames-per-second
-    SetRandomSeed((unsigned int) time(NULL)); // set random seed using the time
+
     //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        Game_Loop(game);
+        GameLoop(game);
     }
 
     // De-Initialization
