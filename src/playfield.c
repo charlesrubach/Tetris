@@ -1,6 +1,6 @@
 #include "game.h"
 
-void Playfield_Init(Game *game) {
+void PlayfieldInit(Game *game) {
     // Initialization logic for the playfield
     for (int i = 0; i < GRID_HEIGHT; i++) {
         for (int j = 0; j < GRID_WIDTH; j++) {
@@ -9,12 +9,12 @@ void Playfield_Init(Game *game) {
     }
 }
 
-void Playfield_Render(const Game *game) {
+void PlayfieldRender(const Game *game) {
     // Rendering logic for the playfield
     for (int i = 0; i < GRID_HEIGHT; i++ ) {
         for (int j = 0; j < GRID_WIDTH; j++) {
-            const int y = i * CELL_SIZE + 10;
-            const int x = j * CELL_SIZE + 10;
+            const int y = i * CELL_SIZE + GRID_PADDING;
+            const int x = j * CELL_SIZE + GRID_PADDING;
             DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, TetrominoColors[game->playfield[i][j]]);
         }
     }
@@ -22,8 +22,8 @@ void Playfield_Render(const Game *game) {
     // Draw grid lines
     for (int i = 0; i < GRID_HEIGHT; i++ ) {
         for (int j = 0; j < GRID_WIDTH; j++) {
-            const int y = i * CELL_SIZE + 10;
-            const int x = j * CELL_SIZE + 10;
+            const int y = i * CELL_SIZE + GRID_PADDING;
+            const int x = j * CELL_SIZE + GRID_PADDING;
             DrawRectangleLines(x, y, CELL_SIZE, CELL_SIZE, CUSTOM_COLOR_GAME_GRID_LINE);
         }
     }
@@ -52,9 +52,24 @@ void Playfield_Render(const Game *game) {
             }
         }
     }
+
+    // Draw next piece
+    for (int i = 0; i < TETROMINO_SIZE; i++) {
+        for (int j = 0; j < TETROMINO_SIZE; j++) {
+            const int y = ((i + game->next_piece->pos.y) * CELL_SIZE) + 10;
+            const int x = ((j + game->next_piece->pos.x) * CELL_SIZE) + 10;
+
+            if (game->next_piece->grid[i][j] != EMPTY_TETROMINO) {
+                DrawRectangle(x, y, CELL_SIZE, CELL_SIZE, TetrominoColors[game->next_piece->grid[i][j]]);
+                DrawRectangleLines(x, y, CELL_SIZE, CELL_SIZE, CUSTOM_COLOR_GAME_GRID_LINE);
+            }
+        }
+    }
+
+
 }
 
-bool Playfield_Overlap_Check(const Game *game, const Tetromino_t *tetromino) {
+bool PlayfieldOverlapCheck(const Game *game, const Tetromino_t *tetromino) {
    bool overlap = false;
     for (int i = 0; i < TETROMINO_SIZE; i++) {
         for (int j = 0; j < TETROMINO_SIZE; j++) {
@@ -73,7 +88,7 @@ bool Playfield_Overlap_Check(const Game *game, const Tetromino_t *tetromino) {
     return overlap;
 }
 
-void Playfield_Copy_Current_To_Playfield(Game *game) {
+void PlayfieldCopyCurrentToPlayfield(Game *game) {
     for (int i = 0; i < TETROMINO_SIZE; i++) {
         for (int j = 0; j < TETROMINO_SIZE; j++) {
             if (game->current_piece->grid[i][j] == game->current_piece->shape) {
@@ -81,4 +96,34 @@ void Playfield_Copy_Current_To_Playfield(Game *game) {
             }
         }
     }
+}
+
+int PlayfieldClearLines(Game *game) {
+    int score = 0;
+    for (int i = 0; i < GRID_HEIGHT; i++) {
+        bool clear_line = true;
+        for (int j = 0; j < GRID_WIDTH; j++) {
+            if (game->playfield[i][j] == EMPTY_TETROMINO) {
+                clear_line = false;
+                break;
+            }
+        }
+        if (clear_line) {
+            score += CLEAR_LINES_POINTS + score;
+            // Clear the line
+            for (int j = 0; j < GRID_WIDTH; j++) {
+                game->playfield[i][j] = EMPTY_TETROMINO;
+            }
+            // Shift everything down
+            for (int k = i; k > 1; k--) {
+                for (int j = 0; j < GRID_WIDTH; j++) {
+                    game->playfield[k][j] = game->playfield[k - 1][j];
+                }
+            }
+            // Restart the scanning procedure
+            i = 0;
+        }
+    }
+
+    return score;
 }
